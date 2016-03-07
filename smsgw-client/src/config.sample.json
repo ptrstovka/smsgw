@@ -1,0 +1,16 @@
+{
+  "server": {
+    "host": "192.168.1.55",
+    "protocol": "ws",
+    "port": "8080"
+  },
+  "gateways": [
+    {
+      "access_key": "rnbg4jisifw4adwn0rfa9ai8rzychp9vpkcdg9lzh3qdi3qj7i7sgqpweiw9x4dm",
+      "port": "dev/ttyS80",
+      "baud_rate": 115200,
+      "log": true,
+      "log_path": "path-to-log-file"
+    }
+  ]
+}
