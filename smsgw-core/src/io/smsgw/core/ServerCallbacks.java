@@ -9,7 +9,7 @@ public interface ServerCallbacks {
 
     void onGatewayRegister(RegisterRequest registerRequest, WebSocket socket);
 
-    void onApiRequest(ApiRequest apiRequest);
+    void onApiRequest(ApiRequest apiRequest, WebSocket socket);
 
     void onApiRegisterRequest(ApiRegisterRequest apiRegisterRequest, WebSocket socket);
 

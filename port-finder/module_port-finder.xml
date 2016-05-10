@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_port-finder" default="compile.module.port-finder">
+  <dirname property="module.port-finder.basedir" file="${ant.file.module_port-finder}"/>
+  
+  
+  <property name="compiler.args.port-finder" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="port-finder.output.dir" value="${module.port-finder.basedir}/../out/production/port-finder"/>
+  <property name="port-finder.testoutput.dir" value="${module.port-finder.basedir}/../out/test/port-finder"/>
+  
+  <path id="port-finder.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="port-finder.module.production.classpath">
+    <path refid="library.rxtxcomm.classpath"/>
+    <pathelement location="${smsgw-core.output.dir}"/>
+  </path>
+  
+  <path id="port-finder.runtime.production.module.classpath">
+    <pathelement location="${port-finder.output.dir}"/>
+    <path refid="library.rxtxcomm.classpath"/>
+    <path refid="smsgw-core.runtime.production.module.classpath"/>
+  </path>
+  
+  <path id="port-finder.module.classpath">
+    <pathelement location="${port-finder.output.dir}"/>
+    <path refid="library.rxtxcomm.classpath"/>
+    <pathelement location="${smsgw-core.testoutput.dir}"/>
+    <pathelement location="${smsgw-core.output.dir}"/>
+  </path>
+  
+  <path id="port-finder.runtime.module.classpath">
+    <pathelement location="${port-finder.testoutput.dir}"/>
+    <pathelement location="${port-finder.output.dir}"/>
+    <path refid="library.rxtxcomm.classpath"/>
+    <path refid="smsgw-core.runtime.module.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.port-finder">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.port-finder">
+    <patternset refid="excluded.from.module.port-finder"/>
+  </patternset>
+  
+  <path id="port-finder.module.sourcepath">
+    <dirset dir="${module.port-finder.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.port-finder" depends="compile.module.port-finder.production,compile.module.port-finder.tests" description="Compile module port-finder"/>
+  
+  <target name="compile.module.port-finder.production" depends="compile.module.smsgw-core" description="Compile module port-finder; production classes">
+    <mkdir dir="${port-finder.output.dir}"/>
+    <javac destdir="${port-finder.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.port-finder}"/>
+      <bootclasspath refid="port-finder.module.bootclasspath"/>
+      <classpath refid="port-finder.module.production.classpath"/>
+      <src refid="port-finder.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.port-finder"/>
+    </javac>
+    
+    <copy todir="${port-finder.output.dir}">
+      <fileset dir="${module.port-finder.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.port-finder.tests" depends="compile.module.port-finder.production" description="compile module port-finder; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.port-finder" description="cleanup module">
+    <delete dir="${port-finder.output.dir}"/>
+    <delete dir="${port-finder.testoutput.dir}"/>
+  </target>
+</project>

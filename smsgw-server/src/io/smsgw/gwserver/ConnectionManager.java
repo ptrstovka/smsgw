@@ -51,6 +51,14 @@ public class ConnectionManager {
         this.apiConnection = apiConnection;
     }
 
+    /**
+     * Find the best gateway for given phone number
+     * based on gateway sending rules.
+     *
+     * @param number String phone number from request
+     * @return String access key of calculated gateway
+     *         null when no gateway is found
+     */
     public String getBestGateway(String number){
 
         String prefix = number;

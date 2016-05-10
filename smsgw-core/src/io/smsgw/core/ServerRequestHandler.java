@@ -26,7 +26,7 @@ public class ServerRequestHandler {
                 break;
             case API_REQUEST:
                 if (serverCallbacks != null) {
-                    serverCallbacks.onApiRequest(new ApiRequest(message));
+                    serverCallbacks.onApiRequest(new ApiRequest(message),socket);
                 }
                 break;
             case API_REGISTER:

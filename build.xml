@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="smsgw" default="all">
+  
+  
+  <property file="build.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*.yarb/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+    <include name="*.ear"/>
+    <include name="*.ane"/>
+    <include name="*.apk"/>
+    <include name="*.swc"/>
+    <include name="*.war"/>
+    <include name="*.zip"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+  </patternset>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.com.googlecode.json-simple:json-simple:1.1.1.classpath">
+    <pathelement location="${basedir}/lib/hamcrest-core-1.1.jar"/>
+    <pathelement location="${basedir}/lib/json-simple-1.1.1.jar"/>
+    <pathelement location="${basedir}/lib/junit-4.10.jar"/>
+  </path>
+  
+  <path id="library.org.java-websocket:java-websocket:1.3.0.classpath">
+    <pathelement location="${basedir}/lib/Java-WebSocket-1.3.0.jar"/>
+  </path>
+  
+  <path id="library.org.json:json:20160212.classpath">
+    <pathelement location="${basedir}/lib/json-20160212.jar"/>
+  </path>
+  
+  <path id="library.rxtxcomm.classpath">
+    <pathelement location="${basedir}/../../workspace/libs/RXTXcomm.jar"/>
+  </path>
+  
+  <!-- Modules -->
+  
+  <import file="${basedir}/smsgw-core/module_smsgw-core.xml"/>
+  
+  <import file="${basedir}/port-finder/module_port-finder.xml"/>
+  
+  <import file="${basedir}/smsgw-client/module_smsgw-client.xml"/>
+  
+  <import file="${basedir}/smsgw-server/module_smsgw-server.xml"/>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.smsgw-core, clean.module.port-finder, clean.module.smsgw-client, clean.module.smsgw-server" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.smsgw-core, compile.module.port-finder, compile.module.smsgw-client, compile.module.smsgw-server" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.port-finder:jar" value="${basedir}/out/artifacts/port_finder_jar"/>
+    <property name="artifact.output.smsgw-client:jar" value="${basedir}/out/artifacts/smsgw_client_jar"/>
+    <property name="artifact.output.smsgw-server:jar" value="${basedir}/out/artifacts/smsgw_server_jar"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.port-finder.jar" value="${artifacts.temp.dir}/port-finder.jar"/>
+    <property name="temp.jar.path.smsgw-client.jar" value="${artifacts.temp.dir}/smsgw-client.jar"/>
+    <property name="temp.jar.path.smsgw-server.jar" value="${artifacts.temp.dir}/smsgw-server.jar"/>
+  </target>
+  
+  <target name="artifact.port-finder:jar" depends="init.artifacts, compile.module.port-finder, compile.module.smsgw-core" description="Build &#39;port-finder:jar&#39; artifact">
+    <property name="artifact.temp.output.port-finder:jar" value="${artifacts.temp.dir}/port_finder_jar"/>
+    <mkdir dir="${artifact.temp.output.port-finder:jar}"/>
+    <jar destfile="${temp.jar.path.port-finder.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${port-finder.output.dir}"/>
+      <zipfileset dir="${smsgw-core.output.dir}"/>
+      <zipfileset src="${basedir}/lib/Java-WebSocket-1.3.0.jar"/>
+      <zipfileset src="${basedir}/lib/json-simple-1.1.1.jar"/>
+      <zipfileset src="${basedir}/lib/junit-4.10.jar"/>
+      <zipfileset src="${basedir}/lib/hamcrest-core-1.1.jar"/>
+      <zipfileset src="${basedir}/lib/json-20160212.jar"/>
+      <zipfileset src="${basedir}/../../workspace/libs/RXTXcomm.jar"/>
+    </jar>
+    <copy file="${temp.jar.path.port-finder.jar}" tofile="${artifact.temp.output.port-finder:jar}/port-finder.jar"/>
+  </target>
+  
+  <target name="artifact.smsgw-client:jar" depends="init.artifacts, compile.module.smsgw-client, compile.module.smsgw-core" description="Build &#39;smsgw-client:jar&#39; artifact">
+    <property name="artifact.temp.output.smsgw-client:jar" value="${artifacts.temp.dir}/smsgw_client_jar"/>
+    <mkdir dir="${artifact.temp.output.smsgw-client:jar}"/>
+    <jar destfile="${temp.jar.path.smsgw-client.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${smsgw-client.output.dir}"/>
+      <zipfileset dir="${smsgw-core.output.dir}"/>
+      <zipfileset src="${basedir}/lib/Java-WebSocket-1.3.0.jar"/>
+      <zipfileset src="${basedir}/lib/json-simple-1.1.1.jar"/>
+      <zipfileset src="${basedir}/lib/junit-4.10.jar"/>
+      <zipfileset src="${basedir}/lib/hamcrest-core-1.1.jar"/>
+      <zipfileset src="${basedir}/lib/json-20160212.jar"/>
+      <zipfileset src="${basedir}/../../workspace/libs/RXTXcomm.jar"/>
+    </jar>
+    <copy file="${temp.jar.path.smsgw-client.jar}" tofile="${artifact.temp.output.smsgw-client:jar}/smsgw-client.jar"/>
+  </target>
+  
+  <target name="artifact.smsgw-server:jar" depends="init.artifacts, compile.module.smsgw-server, compile.module.smsgw-core" description="Build &#39;smsgw-server:jar&#39; artifact">
+    <property name="artifact.temp.output.smsgw-server:jar" value="${artifacts.temp.dir}/smsgw_server_jar"/>
+    <mkdir dir="${artifact.temp.output.smsgw-server:jar}"/>
+    <jar destfile="${temp.jar.path.smsgw-server.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${smsgw-server.output.dir}"/>
+      <zipfileset dir="${smsgw-core.output.dir}"/>
+      <zipfileset src="${basedir}/lib/Java-WebSocket-1.3.0.jar"/>
+      <zipfileset src="${basedir}/lib/json-simple-1.1.1.jar"/>
+      <zipfileset src="${basedir}/lib/junit-4.10.jar"/>
+      <zipfileset src="${basedir}/lib/hamcrest-core-1.1.jar"/>
+      <zipfileset src="${basedir}/lib/json-20160212.jar"/>
+    </jar>
+    <copy file="${temp.jar.path.smsgw-server.jar}" tofile="${artifact.temp.output.smsgw-server:jar}/smsgw-server.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.port-finder:jar, artifact.smsgw-client:jar, artifact.smsgw-server:jar" description="Build all artifacts">
+    <mkdir dir="${artifact.output.port-finder:jar}"/>
+    <copy todir="${artifact.output.port-finder:jar}">
+      <fileset dir="${artifact.temp.output.port-finder:jar}"/>
+    </copy>
+    <mkdir dir="${artifact.output.smsgw-client:jar}"/>
+    <copy todir="${artifact.output.smsgw-client:jar}">
+      <fileset dir="${artifact.temp.output.smsgw-client:jar}"/>
+    </copy>
+    <mkdir dir="${artifact.output.smsgw-server:jar}"/>
+    <copy todir="${artifact.output.smsgw-server:jar}">
+      <fileset dir="${artifact.temp.output.smsgw-server:jar}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>

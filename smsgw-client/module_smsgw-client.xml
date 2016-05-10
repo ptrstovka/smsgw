@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_smsgw-client" default="compile.module.smsgw-client">
+  <dirname property="module.smsgw-client.basedir" file="${ant.file.module_smsgw-client}"/>
+  
+  
+  <property name="compiler.args.smsgw-client" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="smsgw-client.output.dir" value="${module.smsgw-client.basedir}/../out/production/smsgw-client"/>
+  <property name="smsgw-client.testoutput.dir" value="${module.smsgw-client.basedir}/../out/test/smsgw-client"/>
+  
+  <path id="smsgw-client.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="smsgw-client.module.production.classpath">
+    <path refid="library.com.googlecode.json-simple:json-simple:1.1.1.classpath"/>
+    <path refid="library.org.java-websocket:java-websocket:1.3.0.classpath"/>
+    <path refid="library.org.json:json:20160212.classpath"/>
+    <path refid="library.rxtxcomm.classpath"/>
+    <pathelement location="${smsgw-core.output.dir}"/>
+  </path>
+  
+  <path id="smsgw-client.runtime.production.module.classpath">
+    <pathelement location="${smsgw-client.output.dir}"/>
+    <path refid="library.com.googlecode.json-simple:json-simple:1.1.1.classpath"/>
+    <path refid="library.org.java-websocket:java-websocket:1.3.0.classpath"/>
+    <path refid="library.org.json:json:20160212.classpath"/>
+    <path refid="library.rxtxcomm.classpath"/>
+    <path refid="smsgw-core.runtime.production.module.classpath"/>
+  </path>
+  
+  <path id="smsgw-client.module.classpath">
+    <pathelement location="${smsgw-client.output.dir}"/>
+    <path refid="library.com.googlecode.json-simple:json-simple:1.1.1.classpath"/>
+    <path refid="library.org.java-websocket:java-websocket:1.3.0.classpath"/>
+    <path refid="library.org.json:json:20160212.classpath"/>
+    <path refid="library.rxtxcomm.classpath"/>
+    <pathelement location="${smsgw-core.testoutput.dir}"/>
+    <pathelement location="${smsgw-core.output.dir}"/>
+  </path>
+  
+  <path id="smsgw-client.runtime.module.classpath">
+    <pathelement location="${smsgw-client.testoutput.dir}"/>
+    <pathelement location="${smsgw-client.output.dir}"/>
+    <path refid="library.com.googlecode.json-simple:json-simple:1.1.1.classpath"/>
+    <path refid="library.org.java-websocket:java-websocket:1.3.0.classpath"/>
+    <path refid="library.org.json:json:20160212.classpath"/>
+    <path refid="library.rxtxcomm.classpath"/>
+    <path refid="smsgw-core.runtime.module.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.smsgw-client">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.smsgw-client">
+    <patternset refid="excluded.from.module.smsgw-client"/>
+  </patternset>
+  
+  <path id="smsgw-client.module.sourcepath">
+    <dirset dir="${module.smsgw-client.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.smsgw-client" depends="compile.module.smsgw-client.production,compile.module.smsgw-client.tests" description="Compile module smsgw-client"/>
+  
+  <target name="compile.module.smsgw-client.production" depends="compile.module.smsgw-core" description="Compile module smsgw-client; production classes">
+    <mkdir dir="${smsgw-client.output.dir}"/>
+    <javac destdir="${smsgw-client.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.smsgw-client}"/>
+      <bootclasspath refid="smsgw-client.module.bootclasspath"/>
+      <classpath refid="smsgw-client.module.production.classpath"/>
+      <src refid="smsgw-client.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.smsgw-client"/>
+    </javac>
+    
+    <copy todir="${smsgw-client.output.dir}">
+      <fileset dir="${module.smsgw-client.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.smsgw-client.tests" depends="compile.module.smsgw-client.production" description="compile module smsgw-client; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.smsgw-client" description="cleanup module">
+    <delete dir="${smsgw-client.output.dir}"/>
+    <delete dir="${smsgw-client.testoutput.dir}"/>
+  </target>
+</project>

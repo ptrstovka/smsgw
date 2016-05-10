@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_smsgw-server" default="compile.module.smsgw-server">
+  <dirname property="module.smsgw-server.basedir" file="${ant.file.module_smsgw-server}"/>
+  
+  
+  <property name="compiler.args.smsgw-server" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="smsgw-server.output.dir" value="${module.smsgw-server.basedir}/../out/production/smsgw-server"/>
+  <property name="smsgw-server.testoutput.dir" value="${module.smsgw-server.basedir}/../out/test/smsgw-server"/>
+  
+  <path id="smsgw-server.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="smsgw-server.module.production.classpath">
+    <path refid="library.com.googlecode.json-simple:json-simple:1.1.1.classpath"/>
+    <path refid="library.org.java-websocket:java-websocket:1.3.0.classpath"/>
+    <path refid="library.org.json:json:20160212.classpath"/>
+    <pathelement location="${smsgw-core.output.dir}"/>
+  </path>
+  
+  <path id="smsgw-server.runtime.production.module.classpath">
+    <pathelement location="${smsgw-server.output.dir}"/>
+    <path refid="library.com.googlecode.json-simple:json-simple:1.1.1.classpath"/>
+    <path refid="library.org.java-websocket:java-websocket:1.3.0.classpath"/>
+    <path refid="library.org.json:json:20160212.classpath"/>
+    <path refid="smsgw-core.runtime.production.module.classpath"/>
+  </path>
+  
+  <path id="smsgw-server.module.classpath">
+    <pathelement location="${smsgw-server.output.dir}"/>
+    <path refid="library.com.googlecode.json-simple:json-simple:1.1.1.classpath"/>
+    <path refid="library.org.java-websocket:java-websocket:1.3.0.classpath"/>
+    <path refid="library.org.json:json:20160212.classpath"/>
+    <pathelement location="${smsgw-core.testoutput.dir}"/>
+    <pathelement location="${smsgw-core.output.dir}"/>
+  </path>
+  
+  <path id="smsgw-server.runtime.module.classpath">
+    <pathelement location="${smsgw-server.testoutput.dir}"/>
+    <pathelement location="${smsgw-server.output.dir}"/>
+    <path refid="library.com.googlecode.json-simple:json-simple:1.1.1.classpath"/>
+    <path refid="library.org.java-websocket:java-websocket:1.3.0.classpath"/>
+    <path refid="library.org.json:json:20160212.classpath"/>
+    <path refid="smsgw-core.runtime.module.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.smsgw-server">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.smsgw-server">
+    <patternset refid="excluded.from.module.smsgw-server"/>
+  </patternset>
+  
+  <path id="smsgw-server.module.sourcepath">
+    <dirset dir="${module.smsgw-server.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.smsgw-server" depends="compile.module.smsgw-server.production,compile.module.smsgw-server.tests" description="Compile module smsgw-server"/>
+  
+  <target name="compile.module.smsgw-server.production" depends="compile.module.smsgw-core" description="Compile module smsgw-server; production classes">
+    <mkdir dir="${smsgw-server.output.dir}"/>
+    <javac destdir="${smsgw-server.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.smsgw-server}"/>
+      <bootclasspath refid="smsgw-server.module.bootclasspath"/>
+      <classpath refid="smsgw-server.module.production.classpath"/>
+      <src refid="smsgw-server.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.smsgw-server"/>
+    </javac>
+    
+    <copy todir="${smsgw-server.output.dir}">
+      <fileset dir="${module.smsgw-server.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.smsgw-server.tests" depends="compile.module.smsgw-server.production" description="compile module smsgw-server; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.smsgw-server" description="cleanup module">
+    <delete dir="${smsgw-server.output.dir}"/>
+    <delete dir="${smsgw-server.testoutput.dir}"/>
+  </target>
+</project>

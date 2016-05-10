@@ -60,7 +60,7 @@ public class ServerConnector implements ServerCallbacks {
     }
 
     @Override
-    public void onApiRequest(ApiRequest apiRequest) {
+    public void onApiRequest(ApiRequest apiRequest, WebSocket socket) {
         Log.c(TAG, "Got API request.");
         String gatewayKey = connectionManager.getBestGateway(apiRequest.getNumber());
 
@@ -81,6 +81,8 @@ public class ServerConnector implements ServerCallbacks {
         commandRequest.setCommand(CommandBuilder.getInstance().buildCommand(apiRequest.getNumber(), apiRequest.getSmsContent()));
         commandRequest.setGatewayKey(gatewayKey);
         connection.getSocket().send(commandRequest.buildStringRequest());
+        // sent OK to API
+        socket.send("OK");
     }
 
     @Override
@@ -97,6 +99,8 @@ public class ServerConnector implements ServerCallbacks {
         Connection apiConnection = new Connection(socket, true, apiRegisterRequest.getAccessKey());
         connectionManager.setApiConnection(apiConnection);
         Log.c(TAG, String.format(Locale.ENGLISH, "API %s successfully registered!", apiRegisterRequest.getAccessKey()));
+        // send OK to API
+        socket.send("OK");
     }
 
     @Override
