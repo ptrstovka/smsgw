@@ -2,6 +2,9 @@
 <project name="module_smsgw-core" default="compile.module.smsgw-core">
   <dirname property="module.smsgw-core.basedir" file="${ant.file.module_smsgw-core}"/>
   
+  <property name="module.jdk.home.smsgw-core" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.smsgw-core" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.smsgw-core" value="${project.jdk.classpath}"/>
   
   <property name="compiler.args.smsgw-core" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
   
@@ -13,6 +16,7 @@
   </path>
   
   <path id="smsgw-core.module.production.classpath">
+    <path refid="${module.jdk.classpath.smsgw-core}"/>
     <path refid="library.com.googlecode.json-simple:json-simple:1.1.1.classpath"/>
     <path refid="library.org.java-websocket:java-websocket:1.3.0.classpath"/>
     <path refid="library.org.json:json:20160212.classpath"/>
@@ -26,6 +30,7 @@
   </path>
   
   <path id="smsgw-core.module.classpath">
+    <path refid="${module.jdk.classpath.smsgw-core}"/>
     <pathelement location="${smsgw-core.output.dir}"/>
     <path refid="library.com.googlecode.json-simple:json-simple:1.1.1.classpath"/>
     <path refid="library.org.java-websocket:java-websocket:1.3.0.classpath"/>
@@ -58,15 +63,15 @@
   
   <target name="compile.module.smsgw-core" depends="compile.module.smsgw-core.production,compile.module.smsgw-core.tests" description="Compile module smsgw-core"/>
   
-  <target name="compile.module.smsgw-core.production" description="Compile module smsgw-core; production classes">
+  <target name="compile.module.smsgw-core.production" depends="register.custom.compilers" description="Compile module smsgw-core; production classes">
     <mkdir dir="${smsgw-core.output.dir}"/>
-    <javac destdir="${smsgw-core.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+    <javac2 destdir="${smsgw-core.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.smsgw-core}/javac">
       <compilerarg line="${compiler.args.smsgw-core}"/>
       <bootclasspath refid="smsgw-core.module.bootclasspath"/>
       <classpath refid="smsgw-core.module.production.classpath"/>
       <src refid="smsgw-core.module.sourcepath"/>
       <patternset refid="excluded.from.compilation.smsgw-core"/>
-    </javac>
+    </javac2>
     
     <copy todir="${smsgw-core.output.dir}">
       <fileset dir="${module.smsgw-core.basedir}/src">
@@ -76,7 +81,7 @@
     </copy>
   </target>
   
-  <target name="compile.module.smsgw-core.tests" depends="compile.module.smsgw-core.production" description="compile module smsgw-core; test classes" unless="skip.tests"/>
+  <target name="compile.module.smsgw-core.tests" depends="register.custom.compilers,compile.module.smsgw-core.production" description="compile module smsgw-core; test classes" unless="skip.tests"/>
   
   <target name="clean.module.smsgw-core" description="cleanup module">
     <delete dir="${smsgw-core.output.dir}"/>
