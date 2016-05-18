@@ -1,6 +1,3 @@
-# smsgw
-Client for SMS-gateway project.
+## This is second part of the SMS gateway project.
 
-Intellij Idea project with Gateway Server and Client.
-
-see [SMS Gateway Main Project](https://github.com/ptrstovka/sms-gateway)
+Documentation will be available soon. For more information see [first](https://github.com/ptrstovka/sms-gateway) part.

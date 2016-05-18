@@ -93,6 +93,7 @@ public class Configuration {
         return Integer.valueOf((String) jsonObject.get(key));
     }
 
+
     private String getString(JSONObject jsonObject, String key){
         return (String) jsonObject.get(key);
     }

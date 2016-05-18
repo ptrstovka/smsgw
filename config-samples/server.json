@@ -1,0 +1,7 @@
+{
+  "server": {
+    "port": "8080",
+    "log" : false,
+    "log_path": "some-log-path"
+  }
+}

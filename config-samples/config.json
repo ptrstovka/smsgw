@@ -1,0 +1,15 @@
+{
+  "server": {
+    "host": "192.168.1.55",
+    "protocol": "ws",
+    "port": "8080"
+  },
+  "gateways": [
+    {
+      "access_key": "some-random-generated-access-key",
+      "port": "dev/ttyS80",
+      "log": true,
+      "log_path": "path-to-log-file"
+    }
+  ]
+}

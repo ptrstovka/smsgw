@@ -14,22 +14,22 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int a = 0;
-        String s = "A\n";
-        System.out.println(Arrays.toString(s.getBytes()));
-
-        try
-        {
-            int c = 0;
-            while ( ( c = System.in.read()) > -1 )
-            {
-                System.out.println(c);
-            }
-        }
-        catch ( IOException e )
-        {
-            e.printStackTrace();
-        }
+//        int a = 0;
+//        String s = "A\n";
+//        System.out.println(Arrays.toString(s.getBytes()));
+//
+//        try
+//        {
+//            int c = 0;
+//            while ( ( c = System.in.read()) > -1 )
+//            {
+//                System.out.println(c);
+//            }
+//        }
+//        catch ( IOException e )
+//        {
+//            e.printStackTrace();
+//        }
 
         Log.c(TAG, "Searching for available ports...");
         Enumeration ports = CommPortIdentifier.getPortIdentifiers();
